@@ -1,0 +1,32 @@
+
+<% layout('layouts/template') %> 
+<div class="row">
+    <h1 class="text-center">Register</h1>
+    <div class="col-6 offset-3">
+        <form action="/register" method="post" novalidate class="validate-form">
+            <div class="mb-3">
+                <label for="Username">Username</label>
+                <input class="form-control" type="text" id="username" name="username" required>
+                <div class="invalid-feedback">
+                    Please Enter a username!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email">Email</label>
+                <input class="form-control" type="email" id="email" name="email" required>
+                <div class="invalid-feedback">
+                    Please Enter a email!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password">Password</label>
+                <input class="form-control" type="password" id="password" name="password" min="8" required>
+                <div class="invalid-feedback">
+                    Please Enter a password!
+                </div>
+            </div>
+            <button class= "btn btn-success" type="submit">Register</button>
+            <a class="btn btn-primary d-inline" href="/campgrounds" role="button">Back</a>
+        </form>
+    </div>
+</div>

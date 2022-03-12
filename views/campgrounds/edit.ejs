@@ -1,0 +1,58 @@
+
+<% layout('layouts/template') %> 
+<div class="row">
+    <h1 class="text-center">Creat a new campground here</h1>
+    <div class="col-6 offset-3">
+
+
+        <form action="/campgrounds/<%= camps._id %>?_methode=PUT " method="post" novalidate class="validate-form">
+
+            <div class="mb-3"> required
+                <label for="image">Image uri</label>
+                <input class="form-control" type="text" id="image" name="campground[image]"value=<%= camps.image %> required >
+                <div class="invalid-feedback">
+                    Please Provide a link to the image!
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="titel">Titel</label>
+                <input class="form-control" type="text"_id="titel" name="campground[titel]" value=<%=camps.titel%> required>
+                <div class="invalid-feedback">
+                    Please enter a Titel!
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="campground[description]" required><%= camps.description %></textarea>
+                <div class="invalid-feedback">
+                    Please enter a Description!
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="price">Price </label>
+                <div class="input-group">
+                    <span class="input-group-text" id="price-camps">€</span>
+                    <input type="text" class="form-control" id="price" placeholder="0.00" aria-describedby="price-camps" aria-label="price" name="campground[price]" value="<%= camps.price %> " required>
+                    <div class="invalid-feedback">
+                        Please enter a Price!
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                
+                <label for="location">Location</label>
+                <input class="form-control" type="text" id="location" name="campground[location]"value=<%= camps.location %> required >
+                <div class="invalid-feedback">
+                    Please enter a Location!
+                </div>
+            </div>
+            
+            <button class= "btn btn-success" type="submit">Save</button>
+            <a class="btn btn-primary d-inline" href="/campgrounds" role="button">Back</a>
+        </form>
+    </div>
+</div>
