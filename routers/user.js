@@ -1,13 +1,30 @@
-const express = require("express");
-const passport = require("passport");
-const User = require("../models/user");
+import express from "express";
+import passport from "passport";
+import User from "../models/user.js"
 const router = express.Router({ mergeParams: true });
-const handleError = require("../utils/handleError");
+import { handleError } from "../utils/handleError.js";
+
+
 
 router.get("/register", (req, res) => {
   res.render("users/register");
 });
 
+router.post(
+  "/logout",
+  handleError(async (req, res, next) => {
+    try {
+      req.logout((err) => {
+        if (err) return next(err);
+        req.flash("success", "You have been logged out");
+        res.redirect("/campgrounds");
+      });
+    } catch (e) {
+      req.flash("error", e.message);
+      res.redirect("/campgrounds");
+    }
+  })
+);
 router.post(
   "/register",
   handleError(async (req, res, next) => {
@@ -45,11 +62,4 @@ router.post(
     res.redirect(redirectUrl);
   }
 );
-
-router.get("/logout", (req, res) => {
-  req.logout();
-  req.flash("success", "You have been logged out");
-  res.redirect("/campgrounds");
-});
-
-module.exports = router;
+export default router;

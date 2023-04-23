@@ -1,25 +1,33 @@
 //Require Modules
 
-const express = require("express");
+
+import express from "express";
+import mongoose from "mongoose";
+import session from "express-session";
+import flash from "connect-flash";
+import User from "./models/user.js";
+
+import dotenv from "dotenv";
+import passport from "passport";
+import LocalStrategy from "passport-local";
+import path from "path";
+dotenv.config();
+
+import methodOverride from "method-override";
+import ejsMate from "ejs-mate";
+
+import ExpresError from "./utils/expressError.js";
+
+import registerRoutes from "./routers/user.js";
+import reviewsRoutes from "./routers/review.js";
+import campgroundsRoutes from "./routers/campground.js";
+
 const app = express();
-const mongoose = require("mongoose");
-const session = require("express-session");
-const flash = require("connect-flash");
-const User = require("./models/user");
+const PORT = process.env.PORT || 5000;
 
-const LocalStrategy = require("passport-local");
-const passport = require("passport");
 
-const path = require("path");
-const methodOverride = require("method-override");
-const ejsMate = require("ejs-mate");
-const ExpresError = require("./utils/expressError");
 
-const campgroundsRoutes = require("./routers/campground.js");
-const reviewsRoutes = require("./routers/review");
-const registerRoutes = require("./routers/user");
-
-//config
+//config789
 
 const sessionConfig = {
   secret: "imasaltedpassphrase",
@@ -32,6 +40,9 @@ const sessionConfig = {
   },
 };
 //used modules
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -49,7 +60,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // Creat mongoose database
 
-mongoose.connect("mongodb://localhost:27017/yelpcamp", {
+mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -92,6 +103,6 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error", { err });
 });
 
-app.listen(3000, () => {
-  console.log("app is listening on port 3000");
+app.listen(PORT, () => {
+  console.log(`app is listening on port${PORT} `);
 });

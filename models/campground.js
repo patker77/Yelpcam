@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Review = require('./reviews')
+import mongoose from 'mongoose';
+import Review from './reviews.js';
 
 
 const Schema = mongoose.Schema;
@@ -27,4 +27,5 @@ CampgroundSchema.post('findOneAndDelete',async function (doc){
     }
 })
 
-module.exports = mongoose.model('Campground',CampgroundSchema);
+const Campground = mongoose.model('Campground',CampgroundSchema);
+export default Campground;

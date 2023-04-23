@@ -1,10 +1,10 @@
-const express = require("express");
-const Campground = require("../models/campground");
+import express from "express";
+import Campground from "../models/campground.js";
 const router = express.Router();
-const handlerError = require("../utils/handleError");
-const ExpresError = require("../utils/expressError");
-const isLoggedIn = require("../utils/middleware");
-const { campsgroundSchema } = require("../schemas.js");
+import { handleError } from "../utils/handleError.js";
+import ExpresError from "../utils/expressError.js";
+import { isLoggedIn } from "../utils/middleware.js";
+import { campsgroundSchema } from "../schemas.js";
 
 //middleware
 
@@ -20,7 +20,7 @@ const validateCamps = (req, res, next) => {
 
 router.get(
   "",
-  handlerError(async (req, res) => {
+  handleError(async (req, res) => {
     const camps = await Campground.find({});
     res.render("campgrounds/index", { camps });
   })
@@ -34,7 +34,7 @@ router.post(
   "",
   isLoggedIn,
   validateCamps,
-  handlerError(async (req, res, next) => {
+  handleError(async (req, res, next) => {
     const camps = new Campground(req.body.campground);
     await camps.save();
     req.flash("success", `${camps.titel} was Successfully created!`);
@@ -44,7 +44,7 @@ router.post(
 
 router.get(
   "/:id",
-  handlerError(async (req, res) => {
+  handleError(async (req, res) => {
     const camps = await Campground.findById(req.params.id).populate("review");
     if (!camps) {
       req.flash("error", "Sorry can not find that campground!");
@@ -57,7 +57,7 @@ router.get(
 router.get(
   "/:id/edit",
   isLoggedIn,
-  handlerError(async (req, res) => {
+  handleError(async (req, res) => {
     const camps = await Campground.findById(req.params.id);
     if (!camps) {
       req.flash("error", "Sorry can not find that campground!");
@@ -71,7 +71,7 @@ router.put(
   "/:id",
   isLoggedIn,
   validateCamps,
-  handlerError(async (req, res) => {
+  handleError(async (req, res) => {
     const { id } = req.params;
     const camps = await Campground.findByIdAndUpdate(id, {
       ...req.body.campground,
@@ -84,7 +84,7 @@ router.put(
 router.delete(
   "/:id",
   isLoggedIn,
-  handlerError(async (req, res) => {
+  handleError(async (req, res) => {
     const { id } = req.params;
     const camps = await Campground.findByIdAndDelete(id);
     req.flash("success", `${camps.titel} was Successfully deleted!`);
@@ -92,4 +92,4 @@ router.delete(
   })
 );
 
-module.exports = router;
+export default router;

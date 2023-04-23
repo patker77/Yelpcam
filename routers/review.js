@@ -1,14 +1,12 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router({mergeParams: true});
+import Review from '../models/reviews.js';
+import Campground from '../models/campground.js';
 
-const Review = require('../models/reviews');
-const Campground = require('../models/campground');
-
-const handlerError = require('../utils/handleError');
-const ExpresError = require('../utils/expressError');
-const isLoggedIn = require('../utils/middleware');
-
-const {reviewSchema} = require('../schemas.js');
+import { handleError } from "../utils/handleError.js";
+import ExpresError from "../utils/expressError.js";
+import { isLoggedIn } from "../utils/middleware.js";
+import { reviewSchema} from "../schemas.js";
 
 
 //middleware
@@ -25,7 +23,7 @@ const validateReview = (req,res,next) =>{
 
 
 
-router.post('',isLoggedIn, validateReview, handlerError( async (req,res) =>{
+router.post('',isLoggedIn, validateReview, handleError( async (req,res) =>{
     const camps = await Campground.findById(req.params.id);
     const review = new Review(req.body.review);
     await camps.review.push(review);
@@ -35,7 +33,7 @@ router.post('',isLoggedIn, validateReview, handlerError( async (req,res) =>{
     res.redirect(`/campgrounds/${camps._id}`)
 }))
 
-router.delete('/:reviewId',isLoggedIn, handlerError( async (req,res) =>{
+router.delete('/:reviewId',isLoggedIn, handleError( async (req,res) =>{
     const {id, reviewId} = req.params;
     await Campground.findByIdAndUpdate(id, { $pull: { review: reviewId } });
     await Review.findByIdAndDelete(reviewId);
@@ -44,4 +42,4 @@ router.delete('/:reviewId',isLoggedIn, handlerError( async (req,res) =>{
 }))
 
 
-module.exports = router;
+export default router;

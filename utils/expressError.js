@@ -7,4 +7,4 @@ class ExpresError extends Error{
     }
 }
 
-module.exports = ExpresError;
+export default ExpresError;
