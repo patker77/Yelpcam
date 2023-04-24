@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
-const Campground = require('../models/campground');
-const { toLocaleString } = require('./cities');
-const cities = require('./cities');
-const {places,descriptors} = require('./seedHelpers');
+import mongoose from 'mongoose';
+import Campground from '../models/campground.js';
+import cities from './cities.js';
+import {descriptors,places} from "./seedHelpers.js";
+import dotenv from "dotenv";
+dotenv.config();
 
-
-mongoose.connect('mongodb://localhost:27017/yelpcamp', {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -15,7 +15,7 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   // we're connected!
-  console.log('the database is connected');
+  console.log('the database seed is connected');
 });
 
 const sample = array => array[Math.floor(Math.random()*array.length)];
