@@ -1,18 +1,27 @@
 <% layout('layouts/template') %> 
 <div class="row">
     <div class="col-6">
-        <div class="card my-3" style="width: 25rem;">
+        <div class="card mb-3" style="width: 25rem;">
             <img src="<%= camps.image %> " class="card-img-top" alt="">
             <div class="card-body">
-                <h5 class="card-title"><%=camps.titel%></h5>
-                <p class="card-text"><small class="text-muted"><%= camps.location %></small></p>
-                <p class="card-text"><%=camps.description%></p>
-                <p class="card-text"><b>Price: </b>€ <%=camps.price%></p>
+                <div>
+                    <h5 class="card-title"><%=camps.titel%></h5>
+                    <p class="card-text"><%=camps.description%></p>
+                </div>
+               <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted"><%= camps.location %></li>
+                <li class="list-group-item"><b>Price: </b>€ <%=camps.price%></li>
+               </ul>
+               <div class="card-body">
                 <a class="btn btn-primary" href="/campgrounds" role="button">Back</a>
                 <a class="btn btn-warning" href="/campgrounds/<%= camps._id %>/edit" role="button">Edit</a>
                 <form class="d-inline" action="/campgrounds/<%= camps._id %>?_methode=DELETE " method="post">
                     <button class= "btn btn-danger" type="submit">Delete</button>
                 </form>
+                </div>
+                <div class="card-footer text-muted">
+                    2 days ago
+                </div>
             </div>
         </div>
     </div>
@@ -41,9 +50,10 @@
             <div class="card mb-3" style="width: 25rem;"> 
                 <div class="card-body">
                         <div class="card-title">
-                            Rate: <%= review.rating %>
+                            Rating: <%= review.rating %>
                         </div>
                         <p class="card-text"><%= review.body %></p>
+                        <% if(currentUser && review.author.equals(currentUser._id)) %>
                         <form action="/campgrounds/<%= camps._id %>/reviews/<%= review._id %>?_methode=DELETE " method="post">
                             <button class= "btn btn-danger btn" type="submit">Delete</button>
                         </form>
