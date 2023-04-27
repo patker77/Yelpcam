@@ -10,7 +10,7 @@ import {
 } from "../controllers/campgrounds.js";
 const router = express.Router();
 import { handleAsync } from "../utils/handleError.js";
-import { isLoggedIn, validateCamps } from "../utils/middleware.js";
+import { isCampAuthor, isLoggedIn, validateCamps } from "../utils/middleware.js";
 
 router
   .route("/")
@@ -22,9 +22,9 @@ router.get("/new", isLoggedIn, createCampForm);
 router
   .route("/:id")
   .get(handleAsync(getCamp))
-  .put(isLoggedIn, validateCamps, handleAsync(editCamp))
-  .delete(isLoggedIn, handleAsync(deleteCamp));
+  .put(isLoggedIn, validateCamps,isCampAuthor, handleAsync(editCamp))
+  .delete(isLoggedIn,isCampAuthor, handleAsync(deleteCamp));
 
-router.get("/:id/edit", isLoggedIn, handleAsync(editCampForm));
+router.get("/:id/edit", isLoggedIn,isCampAuthor, handleAsync(editCampForm));
 
 export default router;

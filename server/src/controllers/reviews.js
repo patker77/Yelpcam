@@ -4,6 +4,7 @@ import Review from "../models/reviews.js";
 export const createReview = async (req, res) => {
   const camps = await Campground.findById(req.params.id);
   const review = new Review(req.body.review);
+  review.author = req.user._id;
   await camps.review.push(review);
   await review.save();
   await camps.save();

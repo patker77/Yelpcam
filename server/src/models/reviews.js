@@ -11,6 +11,10 @@ const reviewSchema = new Schema({
     body: {
         type: String,
         require: true
+    },
+    author:{
+        type:Schema.Types.ObjectId,
+        ref:"User"
     }
 
 });

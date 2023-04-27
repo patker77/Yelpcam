@@ -10,12 +10,20 @@ export const createCampForm = (req, res) => {
 };
 export const createCamp = async (req, res, next) => {
   const camps = new Campground(req.body.campground);
+  camps.author= req.user._id;
   await camps.save();
   req.flash("success", `${camps.titel} was Successfully created!`);
   res.redirect(`campgrounds/${camps._id}`);
 };
 export const getCamp = async (req, res) => {
-  const camps = await Campground.findById(req.params.id).populate("review").populate("author");
+  const camps = await Campground.findById(req.params.id)
+  .populate({
+    path:"review",
+    populate:{
+      path:"author"
+    }
+  })
+  .populate("author");
   if (!camps) {
     req.flash("error", "Sorry can not find that campground!");
     res.redirect("/campgrounds");
